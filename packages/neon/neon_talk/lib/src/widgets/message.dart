@@ -119,40 +119,34 @@ InlineSpan buildRichObjectParameter({
   required TextStyle? textStyle,
   required bool isPreview,
 }) {
-  Widget child;
-
-  const mentionTypes = ['user', 'call', 'guest', 'user-group', 'group'];
-  if (mentionTypes.contains(parameter.type)) {
-    child = TalkRichObjectMention(
-      parameter: parameter,
-      textStyle: textStyle,
-    );
-  } else {
-    if (isPreview) {
-      child = Text(parameter.name);
-    } else {
-      switch (parameter.type) {
-        case 'file':
-          child = TalkRichObjectFile(
-            parameter: parameter,
-            textStyle: textStyle,
-          );
-        case 'deck-card':
-          child = TalkRichObjectDeckCard(
-            parameter: parameter,
-          );
-        default:
-          child = TalkRichObjectFallback(
-            parameter: parameter,
-            textStyle: textStyle,
-          );
-      }
-    }
-  }
-
   return WidgetSpan(
     alignment: PlaceholderAlignment.middle,
-    child: child,
+    child: switch (parameter.type) {
+      spreed.RichObjectParameter_Type.user ||
+      spreed.RichObjectParameter_Type.call ||
+      spreed.RichObjectParameter_Type.guest ||
+      spreed.RichObjectParameter_Type.userGroup ||
+      spreed.RichObjectParameter_Type.group =>
+        TalkRichObjectMention(
+          parameter: parameter,
+          textStyle: textStyle,
+        ),
+      _ => isPreview
+          ? Text(parameter.name)
+          : switch (parameter.type) {
+              spreed.RichObjectParameter_Type.file => TalkRichObjectFile(
+                  parameter: parameter,
+                  textStyle: textStyle,
+                ),
+              spreed.RichObjectParameter_Type.deckCard => TalkRichObjectDeckCard(
+                  parameter: parameter,
+                ),
+              _ => TalkRichObjectFallback(
+                  parameter: parameter,
+                  textStyle: textStyle,
+                ),
+            },
+    },
   );
 }
 

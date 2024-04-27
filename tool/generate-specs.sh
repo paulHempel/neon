@@ -51,6 +51,8 @@ function generate_spec() {
   generate_spec "." "drop_account"
 )
 
+./tool/generate-rich-objects-patch.php
+
 for spec in /tmp/nextcloud-neon/*.openapi.json; do
   name="$(basename "$spec" | cut -d "." -f 1)"
   if [[ "$name" == "core" ]]; then

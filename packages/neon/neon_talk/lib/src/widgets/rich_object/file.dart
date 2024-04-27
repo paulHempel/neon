@@ -27,7 +27,7 @@ class TalkRichObjectFile extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
 
-    if (parameter.previewAvailable == spreed.RichObjectParameter_PreviewAvailable.yes) {
+    if (parameter.previewAvailable == 'yes') {
       final maxHeight = MediaQuery.sizeOf(context).height / 2;
 
       var width = _parseDimension(parameter.width);

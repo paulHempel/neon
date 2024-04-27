@@ -27,7 +27,7 @@ class TalkRichObjectMention extends StatelessWidget {
     final bool highlight;
 
     switch (parameter.type) {
-      case 'user':
+      case spreed.RichObjectParameter_Type.user:
         final accountsBloc = NeonProvider.of<AccountsBloc>(context);
         final account = accountsBloc.activeAccount.value!;
 
@@ -36,7 +36,7 @@ class TalkRichObjectMention extends StatelessWidget {
           username: parameter.id,
           showStatus: false,
         );
-      case 'call':
+      case spreed.RichObjectParameter_Type.call:
         highlight = true;
         child = CircleAvatar(
           child: ClipOval(
@@ -45,13 +45,13 @@ class TalkRichObjectMention extends StatelessWidget {
             ),
           ),
         );
-      case 'guest':
+      case spreed.RichObjectParameter_Type.guest:
         // TODO: Add highlighting when the mention is about the current guest user.
         highlight = false;
         child = CircleAvatar(
           child: Icon(AdaptiveIcons.person),
         );
-      case 'user-group' || 'group':
+      case spreed.RichObjectParameter_Type.userGroup || spreed.RichObjectParameter_Type.group:
         final accountsBloc = NeonProvider.of<AccountsBloc>(context);
         final userDetailsBloc = accountsBloc.activeUserDetailsBloc;
         final groups = userDetailsBloc.userDetails.valueOrNull?.data?.groups ?? BuiltList();

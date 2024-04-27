@@ -48,7 +48,7 @@ void main() {
         child: TalkRichObjectDeckCard(
           parameter: spreed.RichObjectParameter(
             (b) => b
-              ..type = ''
+              ..type = spreed.RichObjectParameter_Type.deckCard
               ..id = ''
               ..name = 'name'
               ..boardname = 'boardname'
@@ -75,7 +75,7 @@ void main() {
           child: TalkRichObjectMention(
             parameter: spreed.RichObjectParameter(
               (b) => b
-                ..type = 'user'
+                ..type = spreed.RichObjectParameter_Type.user
                 ..id = 'username'
                 ..name = 'name',
             ),
@@ -95,14 +95,17 @@ void main() {
           providers: [
             NeonProvider<AccountsBloc>.value(value: accountsBloc),
           ],
-          child: TalkRichObjectMention(
-            parameter: spreed.RichObjectParameter(
-              (b) => b
-                ..type = 'user'
-                ..id = 'other'
-                ..name = 'name',
+          child: NeonProvider<AccountsBloc>.value(
+            value: accountsBloc,
+            child: TalkRichObjectMention(
+              parameter: spreed.RichObjectParameter(
+                (b) => b
+                  ..type = spreed.RichObjectParameter_Type.user
+                  ..id = 'other'
+                  ..name = 'name',
+              ),
+              textStyle: null,
             ),
-            textStyle: null,
           ),
         ),
       );
@@ -120,15 +123,18 @@ void main() {
           providers: [
             NeonProvider<AccountsBloc>.value(value: accountsBloc),
           ],
-          child: TalkRichObjectMention(
-            parameter: spreed.RichObjectParameter(
-              (b) => b
-                ..type = 'call'
-                ..id = ''
-                ..name = 'name'
-                ..iconUrl = '',
+          child: NeonProvider<AccountsBloc>.value(
+            value: accountsBloc,
+            child: TalkRichObjectMention(
+              parameter: spreed.RichObjectParameter(
+                (b) => b
+                  ..type = spreed.RichObjectParameter_Type.call
+                  ..id = ''
+                  ..name = 'name'
+                  ..iconUrl = '',
+              ),
+              textStyle: null,
             ),
-            textStyle: null,
           ),
         ),
       );
@@ -146,7 +152,7 @@ void main() {
           child: TalkRichObjectMention(
             parameter: spreed.RichObjectParameter(
               (b) => b
-                ..type = 'guest'
+                ..type = spreed.RichObjectParameter_Type.guest
                 ..id = ''
                 ..name = 'name',
             ),
@@ -162,8 +168,11 @@ void main() {
       );
     });
 
-    for (final type in ['user-group', 'group']) {
-      testWidgets(type, (tester) async {
+    for (final type in [
+      spreed.RichObjectParameter_Type.userGroup,
+      spreed.RichObjectParameter_Type.group,
+    ]) {
+      testWidgets(type.value, (tester) async {
         final userDetails = MockUserDetails();
         when(() => userDetails.groups).thenReturn(BuiltList(['group']));
 
@@ -192,7 +201,7 @@ void main() {
         expect(find.text('name'), findsOne);
         await expectLater(
           find.byType(TalkRichObjectMention),
-          matchesGoldenFile('goldens/rich_object_mention_${type}_highlight.png'),
+          matchesGoldenFile('goldens/rich_object_mention_${type.value}_highlight.png'),
         );
 
         await tester.pumpWidget(
@@ -215,7 +224,7 @@ void main() {
         expect(find.text('name'), findsOne);
         await expectLater(
           find.byType(TalkRichObjectMention),
-          matchesGoldenFile('goldens/rich_object_mention_${type}_other.png'),
+          matchesGoldenFile('goldens/rich_object_mention_${type.value}_other.png'),
         );
       });
     }
@@ -228,16 +237,19 @@ void main() {
           providers: [
             NeonProvider<AccountsBloc>.value(value: accountsBloc),
           ],
-          child: TalkRichObjectFile(
-            parameter: spreed.RichObjectParameter(
-              (b) => b
-                ..type = ''
-                ..id = '0'
-                ..name = 'name'
-                ..previewAvailable = spreed.RichObjectParameter_PreviewAvailable.yes
-                ..path = '',
+          child: NeonProvider<AccountsBloc>.value(
+            value: accountsBloc,
+            child: TalkRichObjectFile(
+              parameter: spreed.RichObjectParameter(
+                (b) => b
+                  ..type = spreed.RichObjectParameter_Type.file
+                  ..id = '0'
+                  ..name = 'name'
+                  ..previewAvailable = 'yes'
+                  ..path = '',
+              ),
+              textStyle: null,
             ),
-            textStyle: null,
           ),
         ),
       );
@@ -255,10 +267,10 @@ void main() {
           child: TalkRichObjectFile(
             parameter: spreed.RichObjectParameter(
               (b) => b
-                ..type = ''
+                ..type = spreed.RichObjectParameter_Type.file
                 ..id = '0'
                 ..name = 'name'
-                ..previewAvailable = spreed.RichObjectParameter_PreviewAvailable.no
+                ..previewAvailable = 'no'
                 ..path = '',
             ),
             textStyle: null,
@@ -281,7 +293,7 @@ void main() {
           child: TalkRichObjectFallback(
             parameter: spreed.RichObjectParameter(
               (b) => b
-                ..type = ''
+                ..type = spreed.RichObjectParameter_Type.addressbook
                 ..id = ''
                 ..name = 'name',
             ),
@@ -306,7 +318,7 @@ void main() {
           child: TalkRichObjectFallback(
             parameter: spreed.RichObjectParameter(
               (b) => b
-                ..type = ''
+                ..type = spreed.RichObjectParameter_Type.addressbook
                 ..id = ''
                 ..name = 'name'
                 ..iconUrl = '',

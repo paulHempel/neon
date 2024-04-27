@@ -895,7 +895,33 @@
                 ],
                 "properties": {
                     "type": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                            "addressbook",
+                            "addressbook-contact",
+                            "announcement",
+                            "app",
+                            "calendar",
+                            "calendar-event",
+                            "call",
+                            "circle",
+                            "deck-board",
+                            "deck-card",
+                            "email",
+                            "file",
+                            "forms-form",
+                            "guest",
+                            "highlight",
+                            "geo-location",
+                            "open-graph",
+                            "pending-federated-share",
+                            "systemtag",
+                            "talk-attachment",
+                            "talk-poll",
+                            "user",
+                            "user-group",
+                            "group"
+                        ]
                     },
                     "id": {
                         "type": "string"
@@ -903,19 +929,11 @@
                     "name": {
                         "type": "string"
                     },
-                    "server": {
-                        "type": "string"
-                    },
                     "link": {
                         "type": "string"
                     },
                     "call-type": {
-                        "type": "string",
-                        "enum": [
-                            "one2one",
-                            "group",
-                            "public"
-                        ]
+                        "type": "string"
                     },
                     "icon-url": {
                         "type": "string"
@@ -946,11 +964,7 @@
                         "type": "string"
                     },
                     "preview-available": {
-                        "type": "string",
-                        "enum": [
-                            "yes",
-                            "no"
-                        ]
+                        "type": "string"
                     },
                     "mtime": {
                         "type": "string"
@@ -971,20 +985,15 @@
                         "type": "string"
                     },
                     "visibility": {
-                        "type": "string",
-                        "enum": [
-                            "0",
-                            "1"
-                        ]
+                        "type": "string"
                     },
                     "assignable": {
-                        "type": "string",
-                        "enum": [
-                            "0",
-                            "1"
-                        ]
+                        "type": "string"
                     },
                     "conversation": {
+                        "type": "string"
+                    },
+                    "server": {
                         "type": "string"
                     },
                     "etag": {

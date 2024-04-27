@@ -1,0 +1,127 @@
+[
+    {
+        "op": "replace",
+        "path": "/components/schemas/BaseMessage/properties/messageParameters/additionalProperties",
+        "value": {
+            "$ref": "#/components/schemas/RichObjectParameter"
+        }
+    },
+    {
+        "op": "add",
+        "path": "/components/schemas/RichObjectParameter",
+        "value": {
+            "type": "object",
+            "required": [
+                "type",
+                "id",
+                "name"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "addressbook",
+                        "addressbook-contact",
+                        "announcement",
+                        "app",
+                        "calendar",
+                        "calendar-event",
+                        "call",
+                        "circle",
+                        "deck-board",
+                        "deck-card",
+                        "email",
+                        "file",
+                        "forms-form",
+                        "guest",
+                        "highlight",
+                        "geo-location",
+                        "open-graph",
+                        "pending-federated-share",
+                        "systemtag",
+                        "talk-attachment",
+                        "talk-poll",
+                        "user",
+                        "user-group",
+                        "group"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "call-type": {
+                    "type": "string"
+                },
+                "icon-url": {
+                    "type": "string"
+                },
+                "message-id": {
+                    "type": "string"
+                },
+                "boardname": {
+                    "type": "string"
+                },
+                "stackname": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "mimetype": {
+                    "type": "string"
+                },
+                "preview-available": {
+                    "type": "string"
+                },
+                "mtime": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "thumb": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string"
+                },
+                "assignable": {
+                    "type": "string"
+                },
+                "conversation": {
+                    "type": "string"
+                },
+                "server": {
+                    "type": "string"
+                },
+                "etag": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+]

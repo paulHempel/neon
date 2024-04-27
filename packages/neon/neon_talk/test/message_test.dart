@@ -696,8 +696,14 @@ void main() {
     for (final isPreview in [true, false]) {
       group(isPreview ? 'As preview' : 'Complete', () {
         group('Mention', () {
-          for (final type in ['user', 'call', 'guest', 'user-group', 'group']) {
-            testWidgets(type, (tester) async {
+          for (final type in [
+            spreed.RichObjectParameter_Type.user,
+            spreed.RichObjectParameter_Type.call,
+            spreed.RichObjectParameter_Type.guest,
+            spreed.RichObjectParameter_Type.userGroup,
+            spreed.RichObjectParameter_Type.group,
+          ]) {
+            testWidgets(type.value, (tester) async {
               final userDetails = MockUserDetails();
               when(() => userDetails.groups).thenReturn(BuiltList());
 
@@ -749,7 +755,7 @@ void main() {
                 text: buildRichObjectParameter(
                   parameter: spreed.RichObjectParameter(
                     (b) => b
-                      ..type = 'file'
+                      ..type = spreed.RichObjectParameter_Type.file
                       ..id = ''
                       ..name = 'name',
                   ),
@@ -771,7 +777,7 @@ void main() {
                 text: buildRichObjectParameter(
                   parameter: spreed.RichObjectParameter(
                     (b) => b
-                      ..type = 'deck-card'
+                      ..type = spreed.RichObjectParameter_Type.deckCard
                       ..id = ''
                       ..name = 'name'
                       ..boardname = 'boardname'
@@ -795,7 +801,7 @@ void main() {
                 text: buildRichObjectParameter(
                   parameter: spreed.RichObjectParameter(
                     (b) => b
-                      ..type = 'unknown'
+                      ..type = spreed.RichObjectParameter_Type.addressbook
                       ..id = ''
                       ..name = 'name',
                   ),
@@ -836,7 +842,7 @@ void main() {
               BuiltMap({
                 type: spreed.RichObjectParameter(
                   (b) => b
-                    ..type = ''
+                    ..type = spreed.RichObjectParameter_Type.user
                     ..id = ''
                     ..name = '',
                 ),
@@ -856,7 +862,7 @@ void main() {
           BuiltMap({
             'file': spreed.RichObjectParameter(
               (b) => b
-                ..type = 'file'
+                ..type = spreed.RichObjectParameter_Type.file
                 ..id = ''
                 ..name = '',
             ),
@@ -878,13 +884,13 @@ void main() {
         BuiltMap({
           'actor1': spreed.RichObjectParameter(
             (b) => b
-              ..type = 'user'
+              ..type = spreed.RichObjectParameter_Type.user
               ..id = ''
               ..name = '',
           ),
           'actor2': spreed.RichObjectParameter(
             (b) => b
-              ..type = 'user'
+              ..type = spreed.RichObjectParameter_Type.user
               ..id = ''
               ..name = '',
           ),
