@@ -50,6 +50,15 @@ abstract interface class $BaseInterface {
   BuiltList<Never>? get listNever;
   @BuiltValueField(wireName: 'list-string')
   BuiltList<String>? get listString;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$BaseInterfaceBuilder].
+  $BaseInterface rebuild(void Function($BaseInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$BaseInterfaceBuilder].
+  $BaseInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($BaseInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -187,6 +196,15 @@ abstract interface class $DefaultsInterface {
   JsonObject get objectArray;
   @BuiltValueField(wireName: 'object-bool')
   JsonObject get objectBool;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$DefaultsInterfaceBuilder].
+  $DefaultsInterface rebuild(void Function($DefaultsInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$DefaultsInterfaceBuilder].
+  $DefaultsInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($DefaultsInterfaceBuilder b) {
     b.$bool = _$$bool;
@@ -270,6 +288,15 @@ abstract interface class $AdditionalPropertiesInterface {
   BuiltMap<String, BuiltList<Never>>? get listNever;
   @BuiltValueField(wireName: 'list-string')
   BuiltMap<String, BuiltList<String>>? get listString;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$AdditionalPropertiesInterfaceBuilder].
+  $AdditionalPropertiesInterface rebuild(void Function($AdditionalPropertiesInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$AdditionalPropertiesInterfaceBuilder].
+  $AdditionalPropertiesInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($AdditionalPropertiesInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)

@@ -80,6 +80,37 @@ Spec buildInterface(
       );
     }
 
+    final builderName = '${className}Builder';
+
+    b.methods.add(
+      Method((b) {
+        b
+          ..docs.add('''
+/// Rebuilds the instance.
+///
+/// The result is the same as this instance but with [updates] applied.
+/// [updates] is a function that takes a builder [$builderName].''')
+          ..returns = refer(className)
+          ..name = 'rebuild'
+          ..requiredParameters.add(
+            Parameter((b) {
+              b
+                ..name = 'updates'
+                ..type = refer('void Function($builderName)');
+            }),
+          );
+      }),
+    );
+
+    b.methods.add(
+      Method((b) {
+        b
+          ..docs.add('/// Converts the instance to a builder [$builderName].')
+          ..returns = refer(builderName)
+          ..name = 'toBuilder';
+      }),
+    );
+
     b.methods.add(
       Method((b) {
         b
@@ -95,7 +126,7 @@ Spec buildInterface(
             Parameter(
               (b) => b
                 ..name = 'b'
-                ..type = refer('${className}Builder'),
+                ..type = refer(builderName),
             ),
           );
         if (defaults.isNotEmpty) {
@@ -121,7 +152,7 @@ Spec buildInterface(
             Parameter(
               (b) => b
                 ..name = 'b'
-                ..type = refer('${className}Builder'),
+                ..type = refer(builderName),
             ),
           )
           ..body = validators.build();

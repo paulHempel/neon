@@ -599,6 +599,15 @@ abstract interface class $OCSMetaInterface {
   String? get message;
   String? get totalitems;
   String? get itemsperpage;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OCSMetaInterfaceBuilder].
+  $OCSMetaInterface rebuild(void Function($OCSMetaInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$OCSMetaInterfaceBuilder].
+  $OCSMetaInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OCSMetaInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -644,6 +653,17 @@ abstract class OCSMeta implements $OCSMetaInterface, Built<OCSMeta, OCSMetaBuild
 @BuiltValue(instantiable: false)
 abstract interface class $DirectGetUrlResponseApplicationJson_Ocs_DataInterface {
   String get url;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$DirectGetUrlResponseApplicationJson_Ocs_DataInterfaceBuilder].
+  $DirectGetUrlResponseApplicationJson_Ocs_DataInterface rebuild(
+    void Function($DirectGetUrlResponseApplicationJson_Ocs_DataInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$DirectGetUrlResponseApplicationJson_Ocs_DataInterfaceBuilder].
+  $DirectGetUrlResponseApplicationJson_Ocs_DataInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($DirectGetUrlResponseApplicationJson_Ocs_DataInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -697,6 +717,17 @@ abstract class DirectGetUrlResponseApplicationJson_Ocs_Data
 abstract interface class $DirectGetUrlResponseApplicationJson_OcsInterface {
   OCSMeta get meta;
   DirectGetUrlResponseApplicationJson_Ocs_Data get data;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$DirectGetUrlResponseApplicationJson_OcsInterfaceBuilder].
+  $DirectGetUrlResponseApplicationJson_OcsInterface rebuild(
+    void Function($DirectGetUrlResponseApplicationJson_OcsInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$DirectGetUrlResponseApplicationJson_OcsInterfaceBuilder].
+  $DirectGetUrlResponseApplicationJson_OcsInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($DirectGetUrlResponseApplicationJson_OcsInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -748,6 +779,17 @@ abstract class DirectGetUrlResponseApplicationJson_Ocs
 @BuiltValue(instantiable: false)
 abstract interface class $DirectGetUrlResponseApplicationJsonInterface {
   DirectGetUrlResponseApplicationJson_Ocs get ocs;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$DirectGetUrlResponseApplicationJsonInterfaceBuilder].
+  $DirectGetUrlResponseApplicationJsonInterface rebuild(
+    void Function($DirectGetUrlResponseApplicationJsonInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$DirectGetUrlResponseApplicationJsonInterfaceBuilder].
+  $DirectGetUrlResponseApplicationJsonInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($DirectGetUrlResponseApplicationJsonInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -800,6 +842,15 @@ abstract class DirectGetUrlResponseApplicationJson
 abstract interface class $OutOfOfficeDataCommonInterface {
   String get userId;
   String get message;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeDataCommonInterfaceBuilder].
+  $OutOfOfficeDataCommonInterface rebuild(void Function($OutOfOfficeDataCommonInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$OutOfOfficeDataCommonInterfaceBuilder].
+  $OutOfOfficeDataCommonInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeDataCommonInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -850,6 +901,17 @@ abstract interface class $CurrentOutOfOfficeDataInterface implements $OutOfOffic
   int get startDate;
   int get endDate;
   String get shortMessage;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$CurrentOutOfOfficeDataInterfaceBuilder].
+  @override
+  $CurrentOutOfOfficeDataInterface rebuild(void Function($CurrentOutOfOfficeDataInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$CurrentOutOfOfficeDataInterfaceBuilder].
+  @override
+  $CurrentOutOfOfficeDataInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($CurrentOutOfOfficeDataInterfaceBuilder b) {
     $OutOfOfficeDataCommonInterface._defaults(b);
@@ -903,6 +965,17 @@ abstract class CurrentOutOfOfficeData
 abstract interface class $OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterface {
   OCSMeta get meta;
   CurrentOutOfOfficeData get data;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterface rebuild(
+    void Function($OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_OcsInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -956,6 +1029,17 @@ abstract class OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_Ocs
 @BuiltValue(instantiable: false)
 abstract interface class $OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterface {
   OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJson_Ocs get ocs;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterface rebuild(
+    void Function($OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeGetCurrentOutOfOfficeDataResponseApplicationJsonInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1012,6 +1096,17 @@ abstract interface class $OutOfOfficeDataInterface implements $OutOfOfficeDataCo
   String get firstDay;
   String get lastDay;
   String get status;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeDataInterfaceBuilder].
+  @override
+  $OutOfOfficeDataInterface rebuild(void Function($OutOfOfficeDataInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$OutOfOfficeDataInterfaceBuilder].
+  @override
+  $OutOfOfficeDataInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeDataInterfaceBuilder b) {
     $OutOfOfficeDataCommonInterface._defaults(b);
@@ -1063,6 +1158,17 @@ abstract class OutOfOfficeData implements $OutOfOfficeDataInterface, Built<OutOf
 abstract interface class $OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterface {
   OCSMeta get meta;
   OutOfOfficeData get data;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterface rebuild(
+    void Function($OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeGetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1116,6 +1222,17 @@ abstract class OutOfOfficeGetOutOfOfficeResponseApplicationJson_Ocs
 @BuiltValue(instantiable: false)
 abstract interface class $OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterface {
   OutOfOfficeGetOutOfOfficeResponseApplicationJson_Ocs get ocs;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterface rebuild(
+    void Function($OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeGetOutOfOfficeResponseApplicationJsonInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1170,6 +1287,17 @@ abstract class OutOfOfficeGetOutOfOfficeResponseApplicationJson
 abstract interface class $OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterface {
   OCSMeta get meta;
   OutOfOfficeData get data;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterface rebuild(
+    void Function($OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeSetOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1223,6 +1351,17 @@ abstract class OutOfOfficeSetOutOfOfficeResponseApplicationJson_Ocs
 @BuiltValue(instantiable: false)
 abstract interface class $OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterface {
   OutOfOfficeSetOutOfOfficeResponseApplicationJson_Ocs get ocs;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterface rebuild(
+    void Function($OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeSetOutOfOfficeResponseApplicationJsonInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1277,6 +1416,17 @@ abstract class OutOfOfficeSetOutOfOfficeResponseApplicationJson
 abstract interface class $OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterface {
   OCSMeta get meta;
   JsonObject? get data;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterface rebuild(
+    void Function($OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder].
+  $OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeClearOutOfOfficeResponseApplicationJson_OcsInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1330,6 +1480,17 @@ abstract class OutOfOfficeClearOutOfOfficeResponseApplicationJson_Ocs
 @BuiltValue(instantiable: false)
 abstract interface class $OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterface {
   OutOfOfficeClearOutOfOfficeResponseApplicationJson_Ocs get ocs;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterface rebuild(
+    void Function($OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterfaceBuilder) updates,
+  );
+
+  /// Converts the instance to a builder [$OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterfaceBuilder].
+  $OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OutOfOfficeClearOutOfOfficeResponseApplicationJsonInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1384,6 +1545,15 @@ abstract class OutOfOfficeClearOutOfOfficeResponseApplicationJson
 abstract interface class $Capabilities_DavInterface {
   String get chunking;
   String? get bulkupload;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$Capabilities_DavInterfaceBuilder].
+  $Capabilities_DavInterface rebuild(void Function($Capabilities_DavInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$Capabilities_DavInterfaceBuilder].
+  $Capabilities_DavInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($Capabilities_DavInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -1430,6 +1600,15 @@ abstract class Capabilities_Dav
 @BuiltValue(instantiable: false)
 abstract interface class $CapabilitiesInterface {
   Capabilities_Dav get dav;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$CapabilitiesInterfaceBuilder].
+  $CapabilitiesInterface rebuild(void Function($CapabilitiesInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$CapabilitiesInterfaceBuilder].
+  $CapabilitiesInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($CapabilitiesInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)

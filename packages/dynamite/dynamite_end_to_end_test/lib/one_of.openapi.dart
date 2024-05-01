@@ -36,6 +36,15 @@ typedef OneOfIntDoubleNum = num;
 abstract interface class $ObjectOneOf0Interface {
   @BuiltValueField(wireName: 'attribute1-oneOf')
   String get attribute1OneOf;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$ObjectOneOf0InterfaceBuilder].
+  $ObjectOneOf0Interface rebuild(void Function($ObjectOneOf0InterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$ObjectOneOf0InterfaceBuilder].
+  $ObjectOneOf0InterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($ObjectOneOf0InterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -76,6 +85,15 @@ abstract class ObjectOneOf0 implements $ObjectOneOf0Interface, Built<ObjectOneOf
 abstract interface class $ObjectOneOf1Interface {
   @BuiltValueField(wireName: 'attribute2-oneOf')
   String get attribute2OneOf;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$ObjectOneOf1InterfaceBuilder].
+  $ObjectOneOf1Interface rebuild(void Function($ObjectOneOf1InterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$ObjectOneOf1InterfaceBuilder].
+  $ObjectOneOf1InterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($ObjectOneOf1InterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -119,6 +137,15 @@ typedef ObjectOneOf = ({ObjectOneOf0? objectOneOf0, ObjectOneOf1? objectOneOf1})
 abstract interface class $MixedOneOf1Interface {
   @BuiltValueField(wireName: 'attribute-oneOf')
   String get attributeOneOf;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$MixedOneOf1InterfaceBuilder].
+  $MixedOneOf1Interface rebuild(void Function($MixedOneOf1InterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$MixedOneOf1InterfaceBuilder].
+  $MixedOneOf1InterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($MixedOneOf1InterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -162,6 +189,15 @@ typedef MixedOneOf = ({MixedOneOf1? mixedOneOf1, String? string});
 abstract interface class $OneObjectOneOf0Interface {
   @BuiltValueField(wireName: 'attribute-oneOf')
   String get attributeOneOf;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OneObjectOneOf0InterfaceBuilder].
+  $OneObjectOneOf0Interface rebuild(void Function($OneObjectOneOf0InterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$OneObjectOneOf0InterfaceBuilder].
+  $OneObjectOneOf0InterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OneObjectOneOf0InterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -205,6 +241,15 @@ typedef OneOfIntDoubleOther = ({num? $num, String? string});
 abstract interface class $OneOfUnspecifiedArray0Interface {
   @BuiltValueField(wireName: 'attribute-oneOf')
   String get attributeOneOf;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OneOfUnspecifiedArray0InterfaceBuilder].
+  $OneOfUnspecifiedArray0Interface rebuild(void Function($OneOfUnspecifiedArray0InterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$OneOfUnspecifiedArray0InterfaceBuilder].
+  $OneOfUnspecifiedArray0InterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OneOfUnspecifiedArray0InterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -252,6 +297,15 @@ typedef OneOfUnspecifiedArray = ({
 abstract interface class $OneOfStringArray0Interface {
   @BuiltValueField(wireName: 'attribute-oneOf')
   String get attributeOneOf;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$OneOfStringArray0InterfaceBuilder].
+  $OneOfStringArray0Interface rebuild(void Function($OneOfStringArray0InterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$OneOfStringArray0InterfaceBuilder].
+  $OneOfStringArray0InterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($OneOfStringArray0InterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)

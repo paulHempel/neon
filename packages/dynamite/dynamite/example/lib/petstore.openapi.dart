@@ -318,6 +318,15 @@ class $Client extends _i1.DynamiteClient {
 abstract interface class $NewPetInterface {
   String get name;
   String? get tag;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$NewPetInterfaceBuilder].
+  $NewPetInterface rebuild(void Function($NewPetInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$NewPetInterfaceBuilder].
+  $NewPetInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($NewPetInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
@@ -359,6 +368,17 @@ abstract class NewPet implements $NewPetInterface, Built<NewPet, NewPetBuilder> 
 @BuiltValue(instantiable: false)
 abstract interface class $PetInterface implements $NewPetInterface {
   int get id;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$PetInterfaceBuilder].
+  @override
+  $PetInterface rebuild(void Function($PetInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$PetInterfaceBuilder].
+  @override
+  $PetInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($PetInterfaceBuilder b) {
     $NewPetInterface._defaults(b);
@@ -406,6 +426,15 @@ abstract class Pet implements $PetInterface, Built<Pet, PetBuilder> {
 abstract interface class $ErrorInterface {
   int get code;
   String get message;
+
+  /// Rebuilds the instance.
+  ///
+  /// The result is the same as this instance but with [updates] applied.
+  /// [updates] is a function that takes a builder [$ErrorInterfaceBuilder].
+  $ErrorInterface rebuild(void Function($ErrorInterfaceBuilder) updates);
+
+  /// Converts the instance to a builder [$ErrorInterfaceBuilder].
+  $ErrorInterfaceBuilder toBuilder();
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults($ErrorInterfaceBuilder b) {}
   @BuiltValueHook(finalizeBuilder: true)
