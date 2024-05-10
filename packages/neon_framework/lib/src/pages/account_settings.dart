@@ -140,7 +140,7 @@ class AccountSettingsPage extends StatelessWidget {
           builder: (context, userDetails) {
             if (userDetails.hasError) {
               return NeonError(
-                userDetails.error ?? 'Something went wrong',
+                userDetails.error,
                 type: NeonErrorType.listTile,
                 onRetry: userDetailsBloc.refresh,
               );
