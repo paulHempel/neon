@@ -77,6 +77,7 @@
       }
     }
   },
+  "errorPasswordConfirmationRequired": "You need to confirm your password",
   "errorDialog": "An error has occurred",
   "actionYes": "Yes",
   "actionNo": "No",
@@ -198,6 +199,19 @@
       }
     }
   },
+  "accountOptionsCategoryProfile": "Profile",
+  "accountOptionsProfileFullName": "Full name",
+  "accountOptionsProfileEmail": "Email",
+  "accountOptionsProfilePhoneNumber": "Phone number",
+  "accountOptionsProfileLocation": "Location",
+  "accountOptionsProfileLanguage": "Language",
+  "accountOptionsProfileLocale": "Locale",
+  "accountOptionsProfileWebsite": "Website",
+  "accountOptionsProfileTwitter": "Twitter",
+  "accountOptionsProfileFediverse": "Fediverse",
+  "accountOptionsProfileOrganisation": "Organisation",
+  "accountOptionsProfileRole": "Role",
+  "accountOptionsProfileAbout": "About",
   "accountOptionsInitialApp": "App to show initially",
   "accountOptionsAutomatic": "Automatic",
   "licenses": "Licenses",

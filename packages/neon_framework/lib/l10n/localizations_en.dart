@@ -128,6 +128,9 @@ class NeonLocalizationsEn extends NeonLocalizations {
   }
 
   @override
+  String get errorPasswordConfirmationRequired => 'You need to confirm your password';
+
+  @override
   String get errorDialog => 'An error has occurred';
 
   @override
@@ -360,6 +363,45 @@ class NeonLocalizationsEn extends NeonLocalizations {
   String accountOptionsQuotaUsedOf(String used, String total, String relative) {
     return '$used used of $total ($relative%)';
   }
+
+  @override
+  String get accountOptionsCategoryProfile => 'Profile';
+
+  @override
+  String get accountOptionsProfileFullName => 'Full name';
+
+  @override
+  String get accountOptionsProfileEmail => 'Email';
+
+  @override
+  String get accountOptionsProfilePhoneNumber => 'Phone number';
+
+  @override
+  String get accountOptionsProfileLocation => 'Location';
+
+  @override
+  String get accountOptionsProfileLanguage => 'Language';
+
+  @override
+  String get accountOptionsProfileLocale => 'Locale';
+
+  @override
+  String get accountOptionsProfileWebsite => 'Website';
+
+  @override
+  String get accountOptionsProfileTwitter => 'Twitter';
+
+  @override
+  String get accountOptionsProfileFediverse => 'Fediverse';
+
+  @override
+  String get accountOptionsProfileOrganisation => 'Organisation';
+
+  @override
+  String get accountOptionsProfileRole => 'Role';
+
+  @override
+  String get accountOptionsProfileAbout => 'About';
 
   @override
   String get accountOptionsInitialApp => 'App to show initially';

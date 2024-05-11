@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
@@ -16,14 +18,15 @@ import 'package:neon_framework/src/theme/dialog.dart';
 import 'package:neon_framework/src/utils/account_options.dart';
 import 'package:neon_framework/src/utils/adaptive.dart';
 import 'package:neon_framework/src/widgets/dialog.dart';
-import 'package:neon_framework/src/widgets/error.dart';
+import 'package:neon_framework/widgets.dart';
+import 'package:nextcloud/provisioning_api.dart' as provisioning_api;
 import 'package:url_launcher/url_launcher.dart';
 
 /// Account settings page.
 ///
 /// Displays settings for an [Account]. Settings are specified as `Option`s.
 @internal
-class AccountSettingsPage extends StatelessWidget {
+class AccountSettingsPage extends StatefulWidget {
   /// Creates a new account settings page for the given [account].
   const AccountSettingsPage({
     required this.bloc,
@@ -38,11 +41,33 @@ class AccountSettingsPage extends StatelessWidget {
   final Account account;
 
   @override
-  Widget build(BuildContext context) {
-    final options = bloc.getOptionsFor(account);
-    final userDetailsBloc = bloc.getUserDetailsBlocFor(account);
-    final name = account.humanReadableID;
+  State<AccountSettingsPage> createState() => _AccountSettingsPageState();
+}
 
+class _AccountSettingsPageState extends State<AccountSettingsPage> {
+  late final options = widget.bloc.getOptionsFor(widget.account);
+  late final userDetailsBloc = widget.bloc.getUserDetailsBlocFor(widget.account);
+  late final name = widget.account.humanReadableID;
+  late final StreamSubscription<Object> errorSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    errorSubscription = userDetailsBloc.errors.listen((error) {
+      NeonError.showSnackbar(context, error);
+    });
+  }
+
+  @override
+  void dispose() {
+    unawaited(errorSubscription.cancel());
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final appBar = AppBar(
       title: Text(name),
       actions: [
@@ -51,7 +76,7 @@ class AccountSettingsPage extends StatelessWidget {
             final decision = await showAdaptiveDialog<AccountDeletion>(
               context: context,
               builder: (context) => NeonAccountDeletionDialog(
-                account: account,
+                account: widget.account,
               ),
             );
 
@@ -60,15 +85,15 @@ class AccountSettingsPage extends StatelessWidget {
                 break;
               case AccountDeletion.remote:
                 await launchUrl(
-                  account.serverURL.replace(
-                    path: '${account.serverURL.path}/index.php/settings/user/drop_account',
+                  widget.account.serverURL.replace(
+                    path: '${widget.account.serverURL.path}/index.php/settings/user/drop_account',
                   ),
                 );
               case AccountDeletion.local:
-                final isActive = bloc.activeAccount.valueOrNull == account;
+                final isActive = widget.bloc.activeAccount.valueOrNull == widget.account;
 
                 options.reset();
-                bloc.removeAccount(account);
+                widget.bloc.removeAccount(widget.account);
 
                 if (!context.mounted) {
                   return;
@@ -107,15 +132,33 @@ class AccountSettingsPage extends StatelessWidget {
       ],
     );
 
-    final body = SettingsList(
-      categories: [
-        _buildStorageSection(context, userDetailsBloc),
-        _buildGeneralSection(context, options),
-      ],
+    final body = ResultBuilder.behaviorSubject(
+      subject: userDetailsBloc.userDetails,
+      builder: (context, userDetails) {
+        final categories = <Widget>[_buildGeneralSection(context, options)];
+
+        if (userDetails.hasError) {
+          categories.add(
+            NeonError(
+              userDetails.error,
+              type: NeonErrorType.listTile,
+              onRetry: userDetailsBloc.refresh,
+            ),
+          );
+        }
+        if (userDetails.hasData) {
+          categories
+            ..add(_buildStorageSection(context, userDetails.requireData))
+            ..add(_buildProfileSection(context, userDetailsBloc, userDetails.requireData));
+        }
+
+        return SettingsList(
+          categories: categories,
+        );
+      },
     );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: appBar,
       body: SafeArea(
         child: Center(
@@ -130,51 +173,164 @@ class AccountSettingsPage extends StatelessWidget {
 
   Widget _buildStorageSection(
     BuildContext context,
-    UserDetailsBloc userDetailsBloc,
+    provisioning_api.UserDetails userDetails,
   ) {
     return SettingsCategory(
       title: Text(NeonLocalizations.of(context).accountOptionsCategoryStorageInfo),
       tiles: [
-        ResultBuilder.behaviorSubject(
-          subject: userDetailsBloc.userDetails,
-          builder: (context, userDetails) {
-            if (userDetails.hasError) {
-              return NeonError(
-                userDetails.error,
-                type: NeonErrorType.listTile,
-                onRetry: userDetailsBloc.refresh,
-              );
-            }
-
-            double? value;
-            Widget? subtitle;
-            if (userDetails.hasData) {
-              final quotaRelative = userDetails.data?.quota.relative ?? 0;
-              final quotaTotal = userDetails.data?.quota.total ?? 0;
-              final quotaUsed = userDetails.data?.quota.used ?? 0;
-
-              value = quotaRelative / 100;
-              subtitle = Text(
-                NeonLocalizations.of(context).accountOptionsQuotaUsedOf(
-                  filesize(quotaUsed, 1),
-                  filesize(quotaTotal, 1),
-                  quotaRelative.toString(),
-                ),
-              );
-            }
-
-            return CustomSettingsTile(
-              title: LinearProgressIndicator(
-                value: value,
-                minHeight: isCupertino(context) ? 15 : null,
-                borderRadius: BorderRadius.circular(isCupertino(context) ? 5 : 3),
-                backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-              ),
-              subtitle: subtitle,
-            );
-          },
+        CustomSettingsTile(
+          title: LinearProgressIndicator(
+            value: userDetails.quota.relative / 100,
+            minHeight: isCupertino(context) ? 15 : null,
+            borderRadius: BorderRadius.circular(isCupertino(context) ? 5 : 3),
+            backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          ),
+          subtitle: Text(
+            NeonLocalizations.of(context).accountOptionsQuotaUsedOf(
+              filesize(userDetails.quota.used, 1),
+              filesize(userDetails.quota.total, 1),
+              userDetails.quota.relative.toString(),
+            ),
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildProfileSection(
+    BuildContext context,
+    UserDetailsBloc userDetailsBloc,
+    provisioning_api.UserDetails userDetails,
+  ) {
+    final localizations = NeonLocalizations.of(context);
+
+    final tiles = <Widget>[];
+    for (final property in [
+      (
+        key: 'displayname',
+        value: userDetails.displayname,
+        scope: userDetails.displaynameScope!,
+        label: localizations.accountOptionsProfileFullName,
+        keyboardType: null,
+      ),
+      (
+        key: 'email',
+        value: userDetails.email,
+        scope: userDetails.emailScope!,
+        label: localizations.accountOptionsProfileEmail,
+        keyboardType: TextInputType.emailAddress,
+      ),
+      (
+        key: 'phone',
+        value: userDetails.phone,
+        scope: userDetails.phoneScope!,
+        label: localizations.accountOptionsProfilePhoneNumber,
+        keyboardType: TextInputType.phone,
+      ),
+      (
+        key: 'address',
+        value: userDetails.address,
+        scope: userDetails.addressScope!,
+        label: localizations.accountOptionsProfileLocation,
+        keyboardType: TextInputType.streetAddress,
+      ),
+      (
+        key: 'language',
+        value: userDetails.language,
+        scope: null,
+        label: localizations.accountOptionsProfileLanguage,
+        keyboardType: null,
+      ),
+      (
+        key: 'locale',
+        value: userDetails.locale,
+        scope: null,
+        label: localizations.accountOptionsProfileLocale,
+        keyboardType: null,
+      ),
+      (
+        key: 'website',
+        value: userDetails.website,
+        scope: userDetails.websiteScope!,
+        label: localizations.accountOptionsProfileWebsite,
+        keyboardType: TextInputType.url,
+      ),
+      (
+        key: 'twitter',
+        value: userDetails.twitter,
+        scope: userDetails.twitterScope!,
+        label: localizations.accountOptionsProfileTwitter,
+        keyboardType: null,
+      ),
+      (
+        key: 'fediverse',
+        value: userDetails.fediverse,
+        scope: userDetails.fediverseScope!,
+        label: localizations.accountOptionsProfileFediverse,
+        keyboardType: null,
+      ),
+      (
+        key: 'organisation',
+        value: userDetails.organisation,
+        scope: userDetails.organisationScope!,
+        label: localizations.accountOptionsProfileOrganisation,
+        keyboardType: null,
+      ),
+      (
+        key: 'role',
+        value: userDetails.role,
+        scope: userDetails.roleScope!,
+        label: localizations.accountOptionsProfileRole,
+        keyboardType: null,
+      ),
+      (
+        key: 'about',
+        value: userDetails.biography,
+        scope: userDetails.biographyScope!,
+        label: localizations.accountOptionsProfileAbout,
+        keyboardType: null,
+      ),
+    ]) {
+      final scope = property.scope;
+      Widget? scopeButton;
+      if (scope != null) {
+        scopeButton = IconButton(
+          icon: Icon(
+            switch (scope) {
+              'v2-local' || 'private' => Icons.lock,
+              'v2-federated' || 'contacts' => Icons.groups,
+              'v2-published' || 'public' => Icons.web,
+              'v2-private' => Icons.phone_android,
+              _ => throw UnimplementedError('Unknown scope $scope'),
+            },
+          ),
+          onPressed: () {},
+        );
+      }
+
+      tiles.add(
+        CustomSettingsTile(
+          title: TextField(
+            controller: TextEditingController(
+              text: property.value,
+            ),
+            decoration: InputDecoration(
+              labelText: property.label,
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              suffixIcon: scopeButton,
+            ),
+            keyboardType: property.keyboardType,
+            onChanged: (value) {
+              userDetailsBloc.updateProperty(property.key, value);
+            },
+          ),
+        ),
+      );
+    }
+
+    return SettingsCategory(
+      title: Text(NeonLocalizations.of(context).accountOptionsCategoryProfile),
+      tiles: tiles,
     );
   }
 

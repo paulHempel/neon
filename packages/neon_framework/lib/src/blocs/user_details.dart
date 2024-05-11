@@ -20,6 +20,8 @@ abstract class UserDetailsBloc implements InteractiveBloc {
 
   /// Contains the user details.
   BehaviorSubject<Result<provisioning_api.UserDetails>> get userDetails;
+
+  void updateProperty(String key, String value);
 }
 
 class _UserDetailsBloc extends InteractiveBloc implements UserDetailsBloc {
@@ -52,6 +54,20 @@ class _UserDetailsBloc extends InteractiveBloc implements UserDetailsBloc {
       getRequest: account.client.provisioningApi.users.$getCurrentUser_Request,
       serializer: account.client.provisioningApi.users.$getCurrentUser_Serializer(),
       unwrap: (response) => response.body.ocs.data,
+    );
+  }
+
+  @override
+  Future<void> updateProperty(String key, String value) async {
+    await wrapAction(
+      () async {
+        await account.client.provisioningApi.users.editUser(
+          userId: account.username,
+          key: key,
+          value: value,
+        );
+      },
+      refresh: () async {},
     );
   }
 }

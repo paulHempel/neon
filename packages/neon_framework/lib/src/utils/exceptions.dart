@@ -6,20 +6,21 @@ import 'package:permission_handler/permission_handler.dart';
 /// Details of a [NeonException].
 class NeonExceptionDetails {
   /// Creates new [NeonExceptionDetails].
-  ///
-  /// [isUnauthorized] defaults to false.
   const NeonExceptionDetails({
     required this.getText,
-    this.isUnauthorized = false,
+    this.type = NeonExceptionType.unknown,
   });
 
   /// Text that will be displayed in the UI
   final LabelBuilder getText;
 
-  /// If the [Exception] is the result of an unauthorized API request this should be set to `true`.
-  ///
-  /// The user will then be shown a button to update the credentials of the account instead of retrying the action.
-  final bool isUnauthorized;
+  final NeonExceptionType type;
+}
+
+enum NeonExceptionType {
+  unknown,
+  unauthorized,
+  forbidden,
 }
 
 /// Extensible [Exception] to be used for displaying custom errors in the UI.

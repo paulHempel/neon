@@ -74,7 +74,7 @@ class NeonError extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(details.getText(context)),
-        action: details.isUnauthorized
+        action: details.type == NeonExceptionType.unauthorized
             ? SnackBarAction(
                 label: NeonLocalizations.of(context).loginAgain,
                 onPressed: () => _openLoginPage(context),
@@ -103,10 +103,11 @@ class NeonError extends StatelessWidget {
       color: color,
     );
 
-    final actionMessage =
-        details.isUnauthorized ? NeonLocalizations.of(context).loginAgain : NeonLocalizations.of(context).actionRetry;
+    final actionMessage = details.type == NeonExceptionType.unauthorized
+        ? NeonLocalizations.of(context).loginAgain
+        : NeonLocalizations.of(context).actionRetry;
 
-    final onPressed = details.isUnauthorized ? () => _openLoginPage(context) : onRetry;
+    final onPressed = details.type == NeonExceptionType.unauthorized ? () => _openLoginPage(context) : onRetry;
 
     switch (type) {
       case NeonErrorType.iconOnly:
@@ -171,7 +172,13 @@ class NeonError extends StatelessWidget {
         if (error.statusCode == 401) {
           return NeonExceptionDetails(
             getText: (context) => NeonLocalizations.of(context).errorCredentialsForAccountNoLongerMatch,
-            isUnauthorized: true,
+            type: NeonExceptionType.unauthorized,
+          );
+        }
+        if (error.statusCode == 403) {
+          return NeonExceptionDetails(
+            getText: (context) => NeonLocalizations.of(context).errorPasswordConfirmationRequired,
+            type: NeonExceptionType.forbidden,
           );
         }
         if (error.statusCode >= 500 && error.statusCode <= 599) {

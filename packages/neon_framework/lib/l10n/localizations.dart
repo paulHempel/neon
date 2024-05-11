@@ -269,6 +269,12 @@ abstract class NeonLocalizations {
   /// **'Route not found: {route}'**
   String errorRouteNotFound(String route);
 
+  /// No description provided for @errorPasswordConfirmationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to confirm your password'**
+  String get errorPasswordConfirmationRequired;
+
   /// No description provided for @errorDialog.
   ///
   /// In en, this message translates to:
@@ -706,6 +712,84 @@ abstract class NeonLocalizations {
   /// In en, this message translates to:
   /// **'{used} used of {total} ({relative}%)'**
   String accountOptionsQuotaUsedOf(String used, String total, String relative);
+
+  /// No description provided for @accountOptionsCategoryProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get accountOptionsCategoryProfile;
+
+  /// No description provided for @accountOptionsProfileFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get accountOptionsProfileFullName;
+
+  /// No description provided for @accountOptionsProfileEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get accountOptionsProfileEmail;
+
+  /// No description provided for @accountOptionsProfilePhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get accountOptionsProfilePhoneNumber;
+
+  /// No description provided for @accountOptionsProfileLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get accountOptionsProfileLocation;
+
+  /// No description provided for @accountOptionsProfileLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get accountOptionsProfileLanguage;
+
+  /// No description provided for @accountOptionsProfileLocale.
+  ///
+  /// In en, this message translates to:
+  /// **'Locale'**
+  String get accountOptionsProfileLocale;
+
+  /// No description provided for @accountOptionsProfileWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get accountOptionsProfileWebsite;
+
+  /// No description provided for @accountOptionsProfileTwitter.
+  ///
+  /// In en, this message translates to:
+  /// **'Twitter'**
+  String get accountOptionsProfileTwitter;
+
+  /// No description provided for @accountOptionsProfileFediverse.
+  ///
+  /// In en, this message translates to:
+  /// **'Fediverse'**
+  String get accountOptionsProfileFediverse;
+
+  /// No description provided for @accountOptionsProfileOrganisation.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation'**
+  String get accountOptionsProfileOrganisation;
+
+  /// No description provided for @accountOptionsProfileRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get accountOptionsProfileRole;
+
+  /// No description provided for @accountOptionsProfileAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get accountOptionsProfileAbout;
 
   /// No description provided for @accountOptionsInitialApp.
   ///

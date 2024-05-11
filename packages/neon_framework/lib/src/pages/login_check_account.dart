@@ -9,6 +9,7 @@ import 'package:neon_framework/src/blocs/login_check_account.dart';
 import 'package:neon_framework/src/models/account.dart';
 import 'package:neon_framework/src/router.dart';
 import 'package:neon_framework/src/theme/dialog.dart';
+import 'package:neon_framework/src/utils/exceptions.dart';
 import 'package:neon_framework/src/utils/provider.dart';
 import 'package:neon_framework/src/widgets/account_tile.dart';
 import 'package:neon_framework/src/widgets/error.dart';
@@ -71,7 +72,7 @@ class _LoginCheckAccountPageState extends State<LoginCheckAccountPage> {
                         builder: (context) {
                           final details = NeonError.getDetails(state.error);
                           return NeonValidationTile(
-                            title: details.isUnauthorized
+                            title: details.type == NeonExceptionType.unauthorized
                                 ? NeonLocalizations.of(context).errorCredentialsForAccountNoLongerMatch
                                 : details.getText(context),
                             state: ValidationState.failure,
@@ -91,7 +92,8 @@ class _LoginCheckAccountPageState extends State<LoginCheckAccountPage> {
                                 const HomeRoute().go(context);
                               }
                             : () {
-                                if (state.hasError && NeonError.getDetails(state.error).isUnauthorized) {
+                                if (state.hasError &&
+                                    NeonError.getDetails(state.error).type == NeonExceptionType.unauthorized) {
                                   Navigator.pop(context);
                                   return;
                                 }
