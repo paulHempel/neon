@@ -5,6 +5,7 @@ import 'package:neon_framework/blocs.dart';
 import 'package:neon_framework/theme.dart';
 import 'package:neon_framework/utils.dart';
 import 'package:neon_talk/l10n/localizations.dart';
+import 'package:neon_talk/src/blocs/room.dart';
 import 'package:neon_talk/src/widgets/actor_avatar.dart';
 import 'package:neon_talk/src/widgets/reactions.dart';
 import 'package:neon_talk/src/widgets/read_indicator.dart';
@@ -344,7 +345,7 @@ class TalkParentMessage extends StatelessWidget {
 }
 
 /// Displays a comment chat message including voice messages, recorded audio and video and reactions.
-class TalkCommentMessage extends StatelessWidget {
+class TalkCommentMessage extends StatefulWidget {
   /// Creates a new Talk comment message.
   const TalkCommentMessage({
     required this.chatMessage,
@@ -367,23 +368,31 @@ class TalkCommentMessage extends StatelessWidget {
   final bool isParent;
 
   @override
+  State<TalkCommentMessage> createState() => _TalkCommentMessageState();
+}
+
+class _TalkCommentMessageState extends State<TalkCommentMessage> {
+  bool hoverState = false;
+  bool menuOpen = false;
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     final date = DateTimeUtils.fromSecondsSinceEpoch(
       tz.UTC,
-      chatMessage.timestamp,
+      widget.chatMessage.timestamp,
     );
     tz.TZDateTime? previousDate;
-    if (previousChatMessage != null) {
+    if (widget.previousChatMessage != null) {
       previousDate = DateTimeUtils.fromSecondsSinceEpoch(
         tz.UTC,
-        previousChatMessage!.timestamp,
+        widget.previousChatMessage!.timestamp,
       );
     }
 
-    final separateMessages = chatMessage.actorId != previousChatMessage?.actorId ||
-        previousChatMessage?.messageType == spreed.MessageType.system ||
+    final separateMessages = widget.chatMessage.actorId != widget.previousChatMessage?.actorId ||
+        widget.previousChatMessage?.messageType == spreed.MessageType.system ||
         previousDate == null ||
         date.difference(previousDate) > const Duration(minutes: 3);
 
@@ -392,14 +401,14 @@ class TalkCommentMessage extends StatelessWidget {
     Widget? time;
     if (separateMessages) {
       displayName = Text(
-        getActorDisplayName(TalkLocalizations.of(context), chatMessage),
+        getActorDisplayName(TalkLocalizations.of(context), widget.chatMessage),
         style: textTheme.labelSmall,
       );
 
-      if (!isParent) {
+      if (!widget.isParent) {
         avatar = TalkActorAvatar(
-          actorId: chatMessage.actorId,
-          actorType: chatMessage.actorType,
+          actorId: widget.chatMessage.actorId,
+          actorType: widget.chatMessage.actorType,
         );
 
         time = Text(
@@ -410,19 +419,19 @@ class TalkCommentMessage extends StatelessWidget {
     }
 
     Widget? parent;
-    if (chatMessage
+    if (widget.chatMessage
         case spreed.ChatMessageWithParent(
           parent: final p,
           messageType: != spreed.MessageType.commentDeleted,
-        ) when p != null) {
+        ) when p != null && !widget.isParent) {
       parent = TalkParentMessage(
         parentChatMessage: p,
-        lastCommonRead: lastCommonRead,
+        lastCommonRead: widget.lastCommonRead,
       );
     }
 
     double topMargin;
-    if (isParent) {
+    if (widget.isParent) {
       topMargin = 5;
     } else if (separateMessages) {
       topMargin = 20;
@@ -431,17 +440,17 @@ class TalkCommentMessage extends StatelessWidget {
     }
 
     Widget text = RichText(
-      maxLines: isParent ? 1 : null,
-      overflow: isParent ? TextOverflow.ellipsis : TextOverflow.visible,
+      maxLines: widget.isParent ? 1 : null,
+      overflow: widget.isParent ? TextOverflow.ellipsis : TextOverflow.visible,
       text: buildChatMessage(
-        chatMessage: chatMessage,
-        isPreview: isParent,
-        style: isParent || chatMessage.messageType == spreed.MessageType.commentDeleted
+        chatMessage: widget.chatMessage,
+        isPreview: widget.isParent,
+        style: widget.isParent || widget.chatMessage.messageType == spreed.MessageType.commentDeleted
             ? textTheme.bodySmall
             : textTheme.bodyMedium,
       ),
     );
-    if (chatMessage.messageType == spreed.MessageType.commentDeleted) {
+    if (widget.chatMessage.messageType == spreed.MessageType.commentDeleted) {
       text = Row(
         children: [
           Icon(
@@ -464,57 +473,121 @@ class TalkCommentMessage extends StatelessWidget {
         top: topMargin,
         bottom: 5,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!isParent)
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: SizedBox(
-                width: 40,
-                child: avatar,
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            hoverState = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            hoverState = false;
+          });
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!widget.isParent)
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: SizedBox(
+                  width: 40,
+                  child: avatar,
+                ),
+              ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (displayName != null) displayName,
+                  if (parent != null) parent,
+                  text,
+                  if (!widget.isParent && widget.chatMessage.reactions.isNotEmpty)
+                    TalkReactions(
+                      reactions: widget.chatMessage.reactions,
+                    ),
+                ]
+                    .intersperse(
+                      const SizedBox(
+                        height: 5,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (displayName != null) displayName,
-                if (parent != null) parent,
-                text,
-                if (!isParent && chatMessage.reactions.isNotEmpty)
-                  TalkReactions(
-                    reactions: chatMessage.reactions,
-                  ),
-              ]
-                  .intersperse(
-                    const SizedBox(
-                      height: 5,
+            if (time != null || !widget.isParent)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (time != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5, left: 10),
+                      child: time,
                     ),
-                  )
-                  .toList(),
-            ),
-          ),
-          if (time != null || !isParent)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (time != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5, left: 10),
-                    child: time,
-                  ),
-                if (!isParent && lastCommonRead != null && account.username == chatMessage.actorId)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2.5, left: 10),
-                    child: TalkReadIndicator(
-                      chatMessage: chatMessage,
-                      lastCommonRead: lastCommonRead!,
+                  if (!widget.isParent &&
+                      widget.lastCommonRead != null &&
+                      account.username == widget.chatMessage.actorId)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2.5, left: 10),
+                      child: TalkReadIndicator(
+                        chatMessage: widget.chatMessage,
+                        lastCommonRead: widget.lastCommonRead!,
+                      ),
                     ),
-                  ),
-              ],
-            ),
-        ],
+                ],
+              ),
+            if (!widget.isParent)
+              SizedBox.square(
+                dimension: 40,
+                child: hoverState || menuOpen ? _buildPopupMenuButton(widget.chatMessage) : null,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget? _buildPopupMenuButton(spreed.$ChatMessageInterface chatMessage) {
+    final children = [
+      // All comment messages should always be replyable, so this is just a safeguard in case it ever changes.
+      if (chatMessage.isReplyable)
+        MenuItemButton(
+          child: Text(TalkLocalizations.of(context).roomMessageReply),
+          onPressed: () {
+            setState(() {
+              menuOpen = false;
+            });
+
+            NeonProvider.of<TalkRoomBloc>(context).setReplyChatMessage(chatMessage);
+          },
+        ),
+    ];
+
+    if (children.isEmpty) {
+      return null;
+    }
+
+    return MenuAnchor(
+      menuChildren: children,
+      onOpen: () {
+        setState(() {
+          menuOpen = true;
+        });
+      },
+      onClose: () {
+        setState(() {
+          menuOpen = false;
+        });
+      },
+      builder: (context, controller, child) => IconButton(
+        onPressed: () {
+          if (controller.isOpen) {
+            controller.close();
+          } else {
+            controller.open();
+          }
+        },
+        icon: const Icon(Icons.more_vert),
       ),
     );
   }

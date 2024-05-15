@@ -136,6 +136,12 @@ abstract class TalkLocalizations {
   /// In en, this message translates to:
   /// **'Send a message...'**
   String get roomSendMessage;
+
+  /// No description provided for @roomMessageReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get roomMessageReply;
 }
 
 class _TalkLocalizationsDelegate extends LocalizationsDelegate<TalkLocalizations> {

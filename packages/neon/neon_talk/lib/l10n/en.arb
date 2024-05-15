@@ -12,5 +12,6 @@
       "type": {}
     }
   },
-  "roomSendMessage": "Send a message..."
+  "roomSendMessage": "Send a message...",
+  "roomMessageReply": "Reply"
 }

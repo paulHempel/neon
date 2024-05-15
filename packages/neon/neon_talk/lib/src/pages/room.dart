@@ -37,6 +37,12 @@ class _TalkRoomPageState extends State<TalkRoomPage> {
 
     bloc = NeonProvider.of<TalkRoomBloc>(context);
 
+    bloc.replyTo.listen((replyTo) {
+      if (replyTo != null) {
+        messageFocus.requestFocus();
+      }
+    });
+
     errorsSubscription = bloc.errors.listen((error) {
       NeonError.showSnackbar(context, error);
     });
@@ -193,23 +199,54 @@ class _TalkRoomPageState extends State<TalkRoomPage> {
                 child: Center(
                   child: ConstrainedBox(
                     constraints: Theme.of(context).extension<TalkTheme>()!.messageConstraints,
-                    child: Form(
-                      key: messageFormKey,
-                      child: TextFormField(
-                        controller: messageController,
-                        focusNode: messageFocus,
-                        textInputAction: TextInputAction.send,
-                        decoration: InputDecoration(
-                          prefixIcon: emojiButton,
-                          suffixIcon: IconButton(
-                            icon: Icon(AdaptiveIcons.send),
-                            onPressed: sendMessage,
-                          ),
-                          hintText: TalkLocalizations.of(context).roomSendMessage,
+                    child: Column(
+                      children: [
+                        StreamBuilder(
+                          stream: bloc.replyTo,
+                          builder: (context, replyToSnapshot) => replyToSnapshot.hasData
+                              ? Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox.square(
+                                        dimension: 40,
+                                      ),
+                                      Expanded(
+                                        child: TalkParentMessage(
+                                          parentChatMessage: replyToSnapshot.requireData!,
+                                          lastCommonRead: null,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          bloc.removeReplyChatMessage();
+                                        },
+                                        icon: const Icon(Icons.close),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox(),
                         ),
-                        validator: (input) => validateNotEmpty(context, input),
-                        onFieldSubmitted: (_) => sendMessage(),
-                      ),
+                        Form(
+                          key: messageFormKey,
+                          child: TextFormField(
+                            controller: messageController,
+                            focusNode: messageFocus,
+                            textInputAction: TextInputAction.send,
+                            decoration: InputDecoration(
+                              prefixIcon: emojiButton,
+                              suffixIcon: IconButton(
+                                icon: Icon(AdaptiveIcons.send),
+                                onPressed: sendMessage,
+                              ),
+                              hintText: TalkLocalizations.of(context).roomSendMessage,
+                            ),
+                            validator: (input) => validateNotEmpty(context, input),
+                            onFieldSubmitted: (_) => sendMessage(),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

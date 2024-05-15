@@ -25,6 +25,10 @@ abstract class TalkRoomBloc implements InteractiveBloc {
   /// Sends a new text message to the room.
   void sendMessage(String message);
 
+  void setReplyChatMessage(spreed.$ChatMessageInterface chatMessage);
+
+  void removeReplyChatMessage();
+
   /// The current room data.
   BehaviorSubject<Result<spreed.Room>> get room;
 
@@ -35,6 +39,8 @@ abstract class TalkRoomBloc implements InteractiveBloc {
   /// The last message ID that was read by everyone with read-privacy set to public.
   /// {@endtemplate}
   BehaviorSubject<int> get lastCommonRead;
+
+  BehaviorSubject<spreed.$ChatMessageInterface?> get replyTo;
 }
 
 class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
@@ -145,6 +151,9 @@ class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
   final lastCommonRead = BehaviorSubject();
 
   @override
+  final replyTo = BehaviorSubject.seeded(null);
+
+  @override
   void dispose() {
     pollLoop = false;
     unawaited(account.client.spreed.room.leaveRoom(token: token));
@@ -152,6 +161,7 @@ class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
     unawaited(room.close());
     unawaited(messages.close());
     unawaited(lastCommonRead.close());
+    unawaited(replyTo.close());
     super.dispose();
   }
 
@@ -190,10 +200,14 @@ class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
 
   @override
   Future<void> sendMessage(String message) async {
+    final replyToId = replyTo.value?.id;
+    replyTo.add(null);
+
     await wrapAction(
       () async {
         final response = await account.client.spreed.chat.sendMessage(
           message: message,
+          replyTo: replyToId,
           token: token,
         );
 
@@ -206,6 +220,16 @@ class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
       },
       refresh: () async {},
     );
+  }
+
+  @override
+  void setReplyChatMessage(spreed.$ChatMessageInterface chatMessage) {
+    replyTo.add(chatMessage);
+  }
+
+  @override
+  void removeReplyChatMessage() {
+    replyTo.add(null);
   }
 
   void updateLastCommonRead(String? header) {

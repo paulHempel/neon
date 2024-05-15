@@ -40,4 +40,7 @@ class TalkLocalizationsEn extends TalkLocalizations {
 
   @override
   String get roomSendMessage => 'Send a message...';
+
+  @override
+  String get roomMessageReply => 'Reply';
 }
