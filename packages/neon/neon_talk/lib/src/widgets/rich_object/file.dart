@@ -1,7 +1,7 @@
 import 'package:file_icons/file_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:neon_framework/blocs.dart';
+import 'package:neon_framework/models.dart';
 import 'package:neon_framework/theme.dart';
 import 'package:neon_framework/utils.dart';
 import 'package:neon_framework/widgets.dart';
@@ -70,6 +70,7 @@ class TalkRichObjectFile extends StatelessWidget {
               x: width,
               y: height,
             ),
+            account: NeonProvider.of<Account>(context),
           ),
         ),
       );
@@ -92,7 +93,7 @@ class TalkRichObjectFile extends StatelessWidget {
     return InkWell(
       onTap: () {
         final link = Uri.parse(parameter.link!);
-        final account = NeonProvider.of<AccountsBloc>(context).activeAccount.value!;
+        final account = NeonProvider.of<Account>(context);
         context.go(account.completeUri(link).toString());
       },
       child: child,

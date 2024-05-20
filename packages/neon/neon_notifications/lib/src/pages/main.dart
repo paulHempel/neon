@@ -107,6 +107,7 @@ class _NotificationsMainPageState extends State<NotificationsMainPage> {
                 uri: Uri.parse(notification.icon!),
                 size: const Size.square(largeIconSize),
                 svgColorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                account: NeonProvider.of<Account>(context),
               ),
             ),
       onTap: () async {
@@ -115,8 +116,7 @@ class _NotificationsMainPageState extends State<NotificationsMainPage> {
         }
         if (app != null) {
           // TODO: use go_router once implemented
-          final accountsBloc = NeonProvider.of<AccountsBloc>(context);
-          accountsBloc.activeAppsBloc.setActiveApp(app.id);
+          NeonProvider.of<AppsBloc>(context).setActiveApp(app.id);
         } else {
           await showUnimplementedDialog(
             context: context,

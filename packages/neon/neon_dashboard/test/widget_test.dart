@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:neon_dashboard/l10n/localizations.dart';
 import 'package:neon_dashboard/src/pages/main.dart';
 import 'package:neon_dashboard/src/widgets/widget.dart';
 import 'package:neon_dashboard/src/widgets/widget_button.dart';
 import 'package:neon_dashboard/src/widgets/widget_item.dart';
-import 'package:neon_framework/blocs.dart';
 import 'package:neon_framework/models.dart';
 import 'package:neon_framework/testing.dart';
 import 'package:neon_framework/theme.dart';
-import 'package:neon_framework/utils.dart';
 import 'package:neon_framework/widgets.dart';
 import 'package:nextcloud/dashboard.dart' as dashboard;
-import 'package:rxdart/rxdart.dart';
+import 'package:provider/provider.dart';
 
-Widget wrapWidget(AccountsBloc accountsBloc, Widget child) => TestApp(
+Widget wrapWidget(Widget child) => TestApp(
       localizationsDelegates: DashboardLocalizations.localizationsDelegates,
       supportedLocales: DashboardLocalizations.supportedLocales,
       providers: [
-        NeonProvider<AccountsBloc>.value(value: accountsBloc),
+        Provider<Account>.value(
+          value: Account(
+            serverURL: Uri(),
+            username: 'example',
+          ),
+        ),
       ],
       child: child,
     );
 
 void main() {
-  final accountsBloc = MockAccountsBloc();
-  when(() => accountsBloc.activeAccount).thenAnswer(
-    (invocation) => BehaviorSubject.seeded(
-      Account(
-        serverURL: Uri(),
-        username: 'example',
-      ),
-    ),
-  );
-
   setUp(() {
     FakeNeonStorage.setup();
   });
@@ -53,7 +45,6 @@ void main() {
     testWidgets('Everything filled', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetItem(
             item: item,
             roundIcon: true,
@@ -89,7 +80,6 @@ void main() {
     testWidgets('Not round', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetItem(
             item: item,
             roundIcon: false,
@@ -112,7 +102,6 @@ void main() {
     testWidgets('Without link', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetItem(
             item: item.rebuild((b) => b..link = ''),
             roundIcon: true,
@@ -133,7 +122,6 @@ void main() {
     testWidgets('Without overlayIconUrl', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetItem(
             item: item.rebuild((b) => b..overlayIconUrl = ''),
             roundIcon: true,
@@ -156,7 +144,6 @@ void main() {
     testWidgets('New', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetButton(
             button: button,
           ),
@@ -172,7 +159,6 @@ void main() {
     testWidgets('More', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetButton(
             button: button.rebuild((b) => b.type = 'more'),
           ),
@@ -188,7 +174,6 @@ void main() {
     testWidgets('Setup', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetButton(
             button: button.rebuild((b) => b.type = 'setup'),
           ),
@@ -204,7 +189,6 @@ void main() {
     testWidgets('Invalid', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           DashboardWidgetButton(
             button: button.rebuild((b) => b.type = 'test'),
           ),
@@ -257,7 +241,6 @@ void main() {
     testWidgets('Everything filled', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widget,
@@ -303,7 +286,6 @@ void main() {
       final widgetEmptyURL = widget.rebuild((b) => b.widgetUrl = '');
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widgetEmptyURL,
@@ -331,7 +313,6 @@ void main() {
       final widgetNotRound = widget.rebuild((b) => b.itemIconsRound = false);
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widgetNotRound,
@@ -360,7 +341,6 @@ void main() {
     testWidgets('With halfEmptyContentMessage', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widget,
@@ -383,7 +363,6 @@ void main() {
     testWidgets('With emptyContentMessage', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widget,
@@ -406,7 +385,6 @@ void main() {
     testWidgets('Without items', (tester) async {
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widget,
@@ -430,7 +408,6 @@ void main() {
       final widgetWithoutButtons = widget.rebuild((b) => b.buttons.clear());
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widgetWithoutButtons,
@@ -455,7 +432,6 @@ void main() {
       );
       await tester.pumpWidget(
         wrapWidget(
-          accountsBloc,
           Builder(
             builder: (context) => DashboardWidget(
               widget: widgetWithMultipleButtons,

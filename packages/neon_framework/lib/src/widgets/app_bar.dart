@@ -4,13 +4,11 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart';
+import 'package:neon_framework/blocs.dart';
 import 'package:neon_framework/l10n/localizations.dart';
-import 'package:neon_framework/src/bloc/result.dart';
+import 'package:neon_framework/models.dart';
 import 'package:neon_framework/src/blocs/accounts.dart';
-import 'package:neon_framework/src/blocs/apps.dart';
 import 'package:neon_framework/src/blocs/unified_search.dart';
-import 'package:neon_framework/src/models/account.dart';
-import 'package:neon_framework/src/models/notifications_interface.dart';
 import 'package:neon_framework/src/utils/global_options.dart' as global_options;
 import 'package:neon_framework/src/utils/provider.dart';
 import 'package:neon_framework/src/widgets/account_switcher_button.dart';
@@ -45,8 +43,8 @@ class _NeonAppBarState extends State<NeonAppBar> {
     super.initState();
 
     globalOptions = NeonProvider.of<global_options.GlobalOptions>(context);
-    unifiedSearchBloc = NeonProvider.of<AccountsBloc>(context).activeUnifiedSearchBloc;
-    appsBloc = NeonProvider.of<AccountsBloc>(context).activeAppsBloc;
+    unifiedSearchBloc = NeonProvider.of<UnifiedSearchBloc>(context);
+    appsBloc = NeonProvider.of<AppsBloc>(context);
 
     searchTermSubscription =
         searchTermController.stream.debounceTime(const Duration(milliseconds: 250)).listen(unifiedSearchBloc.search);
@@ -146,7 +144,6 @@ class NotificationIconButton extends StatefulWidget {
 }
 
 class _NotificationIconButtonState extends State<NotificationIconButton> {
-  late AccountsBloc _accountsBloc;
   late AppsBloc _appsBloc;
   late BuiltList<Account> _accounts;
   late Account _account;
@@ -155,10 +152,10 @@ class _NotificationIconButtonState extends State<NotificationIconButton> {
   @override
   void initState() {
     super.initState();
-    _accountsBloc = NeonProvider.of<AccountsBloc>(context);
-    _appsBloc = _accountsBloc.activeAppsBloc;
-    _accounts = _accountsBloc.accounts.value;
-    _account = _accountsBloc.activeAccount.value!;
+    final accountsBloc = NeonProvider.of<AccountsBloc>(context);
+    _accounts = accountsBloc.accounts.value;
+    _account = accountsBloc.activeAccount.value!;
+    _appsBloc = accountsBloc.getAppsBlocFor(_account);
 
     notificationSubscription = _appsBloc.openNotifications.listen((_) async {
       final notificationsAppImplementation = _appsBloc.notificationsAppImplementation.valueOrNull;

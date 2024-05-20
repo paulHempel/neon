@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:neon_framework/blocs.dart';
+import 'package:neon_framework/models.dart';
 import 'package:neon_framework/testing.dart';
 import 'package:neon_framework/utils.dart';
 import 'package:neon_talk/l10n/localizations.dart';
@@ -17,6 +18,7 @@ import 'package:neon_talk/src/widgets/read_indicator.dart';
 import 'package:neon_talk/src/widgets/unread_indicator.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:nextcloud/spreed.dart' as spreed;
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'testing.dart';
@@ -24,7 +26,7 @@ import 'testing.dart';
 void main() {
   late spreed.Room room;
   late TalkBloc bloc;
-  late AccountsBloc accountsBloc;
+  late Account account;
 
   setUpAll(() {
     registerFallbackValue(spreed.RoomType.group);
@@ -45,13 +47,10 @@ void main() {
     when(() => bloc.errors).thenAnswer((_) => StreamController<Object>().stream);
     when(() => bloc.rooms).thenAnswer((_) => BehaviorSubject.seeded(Result.success(BuiltList([room]))));
 
-    final account = MockAccount();
+    account = MockAccount();
     when(() => account.id).thenReturn('');
     when(() => account.username).thenReturn('test');
     when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
-
-    accountsBloc = MockAccountsBloc();
-    when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
   });
 
   testWidgets('Errors', (tester) async {
@@ -65,7 +64,7 @@ void main() {
         localizationsDelegates: TalkLocalizations.localizationsDelegates,
         supportedLocales: TalkLocalizations.supportedLocales,
         providers: [
-          NeonProvider<AccountsBloc>.value(value: accountsBloc),
+          Provider<Account>.value(value: account),
           NeonProvider<TalkBloc>.value(value: bloc),
         ],
         child: const TalkMainPage(),
@@ -87,7 +86,7 @@ void main() {
     await tester.pumpWidget(
       TestApp(
         providers: [
-          NeonProvider<AccountsBloc>.value(value: accountsBloc),
+          Provider<Account>.value(value: account),
           NeonProvider<TalkBloc>.value(value: bloc),
         ],
         child: const TalkMainPage(),
@@ -114,7 +113,7 @@ void main() {
           localizationsDelegates: TalkLocalizations.localizationsDelegates,
           supportedLocales: TalkLocalizations.supportedLocales,
           providers: [
-            NeonProvider<AccountsBloc>.value(value: accountsBloc),
+            Provider<Account>.value(value: account),
             NeonProvider<TalkBloc>.value(value: bloc),
           ],
           child: const TalkMainPage(),
@@ -148,7 +147,7 @@ void main() {
             localizationsDelegates: TalkLocalizations.localizationsDelegates,
             supportedLocales: TalkLocalizations.supportedLocales,
             providers: [
-              NeonProvider<AccountsBloc>.value(value: accountsBloc),
+              Provider<Account>.value(value: account),
               NeonProvider<TalkBloc>.value(value: bloc),
             ],
             child: const TalkMainPage(),
@@ -181,7 +180,7 @@ void main() {
             localizationsDelegates: TalkLocalizations.localizationsDelegates,
             supportedLocales: TalkLocalizations.supportedLocales,
             providers: [
-              NeonProvider<AccountsBloc>.value(value: accountsBloc),
+              Provider<Account>.value(value: account),
               NeonProvider<TalkBloc>.value(value: bloc),
             ],
             child: const TalkMainPage(),
@@ -208,7 +207,7 @@ void main() {
         localizationsDelegates: TalkLocalizations.localizationsDelegates,
         supportedLocales: TalkLocalizations.supportedLocales,
         providers: [
-          NeonProvider<AccountsBloc>.value(value: accountsBloc),
+          Provider<Account>.value(value: account),
           NeonProvider<TalkBloc>.value(value: bloc),
         ],
         child: const TalkMainPage(),

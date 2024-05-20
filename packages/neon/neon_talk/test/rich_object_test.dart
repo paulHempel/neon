@@ -14,11 +14,11 @@ import 'package:neon_talk/src/widgets/rich_object/file.dart';
 import 'package:neon_talk/src/widgets/rich_object/mention.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:nextcloud/spreed.dart' as spreed;
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
   late Account account;
-  late AccountsBloc accountsBloc;
 
   setUpAll(() {
     FakeNeonStorage.setup();
@@ -37,9 +37,6 @@ void main() {
       ),
     );
     when(() => account.completeUri(any())).thenAnswer((invocation) => invocation.positionalArguments[0]! as Uri);
-
-    accountsBloc = MockAccountsBloc();
-    when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
   });
 
   testWidgets('Deck card', (tester) async {
@@ -70,7 +67,7 @@ void main() {
       await tester.pumpWidget(
         TestApp(
           providers: [
-            NeonProvider<AccountsBloc>.value(value: accountsBloc),
+            Provider<Account>.value(value: account),
           ],
           child: TalkRichObjectMention(
             parameter: spreed.RichObjectParameter(
@@ -93,7 +90,7 @@ void main() {
       await tester.pumpWidget(
         TestApp(
           providers: [
-            NeonProvider<AccountsBloc>.value(value: accountsBloc),
+            Provider<Account>.value(value: account),
           ],
           child: TalkRichObjectMention(
             parameter: spreed.RichObjectParameter(
@@ -118,7 +115,7 @@ void main() {
       await tester.pumpWidget(
         TestApp(
           providers: [
-            NeonProvider<AccountsBloc>.value(value: accountsBloc),
+            Provider<Account>.value(value: account),
           ],
           child: TalkRichObjectMention(
             parameter: spreed.RichObjectParameter(
@@ -170,12 +167,10 @@ void main() {
         final userDetailsBloc = MockUserDetailsBloc();
         when(() => userDetailsBloc.userDetails).thenAnswer((_) => BehaviorSubject.seeded(Result.success(userDetails)));
 
-        when(() => accountsBloc.activeUserDetailsBloc).thenReturn(userDetailsBloc);
-
         await tester.pumpWidget(
           TestApp(
             providers: [
-              NeonProvider<AccountsBloc>.value(value: accountsBloc),
+              NeonProvider<UserDetailsBloc>.value(value: userDetailsBloc),
             ],
             child: TalkRichObjectMention(
               parameter: spreed.RichObjectParameter(
@@ -198,7 +193,7 @@ void main() {
         await tester.pumpWidget(
           TestApp(
             providers: [
-              NeonProvider<AccountsBloc>.value(value: accountsBloc),
+              NeonProvider<UserDetailsBloc>.value(value: userDetailsBloc),
             ],
             child: TalkRichObjectMention(
               parameter: spreed.RichObjectParameter(
@@ -226,7 +221,7 @@ void main() {
       await tester.pumpWidget(
         TestApp(
           providers: [
-            NeonProvider<AccountsBloc>.value(value: accountsBloc),
+            Provider<Account>.value(value: account),
           ],
           child: TalkRichObjectFile(
             parameter: spreed.RichObjectParameter(
@@ -301,7 +296,7 @@ void main() {
       await tester.pumpWidget(
         TestApp(
           providers: [
-            NeonProvider<AccountsBloc>.value(value: accountsBloc),
+            Provider<Account>.value(value: account),
           ],
           child: TalkRichObjectFallback(
             parameter: spreed.RichObjectParameter(

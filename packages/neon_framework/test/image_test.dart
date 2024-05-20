@@ -96,7 +96,7 @@ void main() {
 
     await tester.pumpWidget(
       TestApp(
-        child: NeonApiImage.withAccount(
+        child: NeonApiImage(
           getRequest: (_) => mockRequest,
           cacheKey: 'key',
           etag: null,
@@ -139,7 +139,7 @@ void main() {
     final uri = Uri.parse('https://example.com');
     await tester.pumpWidget(
       TestApp(
-        child: NeonUriImage.withAccount(
+        child: NeonUriImage(
           uri: uri,
           account: mockAccount,
         ),

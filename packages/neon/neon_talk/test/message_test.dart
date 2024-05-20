@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:neon_framework/blocs.dart';
+import 'package:neon_framework/models.dart';
 import 'package:neon_framework/testing.dart';
 import 'package:neon_framework/theme.dart';
 import 'package:neon_framework/utils.dart';
@@ -18,13 +19,20 @@ import 'package:neon_talk/src/widgets/rich_object/file.dart';
 import 'package:neon_talk/src/widgets/rich_object/mention.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:nextcloud/spreed.dart' as spreed;
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'testing.dart';
 
-Widget wrapWidget(Widget child) => TestApp(
+Widget wrapWidget({
+  required Widget child,
+  List<SingleChildWidget> providers = const [],
+}) =>
+    TestApp(
       localizationsDelegates: TalkLocalizations.localizationsDelegates,
       supportedLocales: TalkLocalizations.supportedLocales,
+      providers: providers,
       child: child,
     );
 
@@ -64,7 +72,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessagePreview(
+          child: TalkMessagePreview(
             actorId: 'test',
             roomType: spreed.RoomType.group,
             chatMessage: chatMessage,
@@ -84,7 +92,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessagePreview(
+          child: TalkMessagePreview(
             actorId: 'abc',
             roomType: spreed.RoomType.group,
             chatMessage: chatMessage,
@@ -103,7 +111,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessagePreview(
+          child: TalkMessagePreview(
             actorId: 'test',
             roomType: spreed.RoomType.oneToOne,
             chatMessage: chatMessage,
@@ -122,7 +130,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessagePreview(
+          child: TalkMessagePreview(
             actorId: 'abc',
             roomType: spreed.RoomType.oneToOne,
             chatMessage: chatMessage,
@@ -141,7 +149,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessagePreview(
+          child: TalkMessagePreview(
             actorId: 'abc',
             roomType: spreed.RoomType.group,
             chatMessage: chatMessage,
@@ -160,7 +168,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessagePreview(
+          child: TalkMessagePreview(
             actorId: 'abc',
             roomType: spreed.RoomType.oneToOne,
             chatMessage: chatMessage,
@@ -181,7 +189,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkMessage(
+          child: TalkMessage(
             chatMessage: chatMessage,
             lastCommonRead: null,
           ),
@@ -195,9 +203,6 @@ void main() {
       when(() => account.id).thenReturn('');
       when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-      final accountsBloc = MockAccountsBloc();
-      when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
       final chatMessage = MockChatMessage();
       when(() => chatMessage.messageType).thenReturn(spreed.MessageType.comment);
       when(() => chatMessage.timestamp).thenReturn(0);
@@ -210,12 +215,12 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          NeonProvider<AccountsBloc>.value(
-            value: accountsBloc,
-            child: TalkMessage(
-              chatMessage: chatMessage,
-              lastCommonRead: null,
-            ),
+          providers: [
+            Provider<Account>.value(value: account),
+          ],
+          child: TalkMessage(
+            chatMessage: chatMessage,
+            lastCommonRead: null,
           ),
         ),
       );
@@ -230,7 +235,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkSystemMessage(
+          child: TalkSystemMessage(
             chatMessage: chatMessage,
             previousChatMessage: null,
           ),
@@ -249,7 +254,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkSystemMessage(
+          child: TalkSystemMessage(
             chatMessage: chatMessage,
             previousChatMessage: null,
           ),
@@ -271,7 +276,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          TalkSystemMessage(
+          child: TalkSystemMessage(
             chatMessage: chatMessage,
             previousChatMessage: previousChatMessage,
           ),
@@ -291,9 +296,6 @@ void main() {
     when(() => account.id).thenReturn('');
     when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-    final accountsBloc = MockAccountsBloc();
-    when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
     final chatMessage = MockChatMessage();
     when(() => chatMessage.messageType).thenReturn(spreed.MessageType.comment);
     when(() => chatMessage.timestamp).thenReturn(0);
@@ -306,12 +308,12 @@ void main() {
 
     await tester.pumpWidget(
       wrapWidget(
-        NeonProvider<AccountsBloc>.value(
-          value: accountsBloc,
-          child: TalkParentMessage(
-            parentChatMessage: chatMessage,
-            lastCommonRead: null,
-          ),
+        providers: [
+          Provider<Account>.value(value: account),
+        ],
+        child: TalkParentMessage(
+          parentChatMessage: chatMessage,
+          lastCommonRead: null,
         ),
       ),
     );
@@ -325,9 +327,6 @@ void main() {
       when(() => account.id).thenReturn('');
       when(() => account.username).thenReturn('test');
       when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
-
-      final accountsBloc = MockAccountsBloc();
-      when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
 
       final previousChatMessage = MockChatMessage();
       when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.comment);
@@ -347,13 +346,13 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          NeonProvider<AccountsBloc>.value(
-            value: accountsBloc,
-            child: TalkCommentMessage(
-              chatMessage: chatMessage,
-              lastCommonRead: 0,
-              previousChatMessage: previousChatMessage,
-            ),
+          providers: [
+            Provider<Account>.value(value: account),
+          ],
+          child: TalkCommentMessage(
+            chatMessage: chatMessage,
+            lastCommonRead: 0,
+            previousChatMessage: previousChatMessage,
           ),
         ),
       );
@@ -375,9 +374,6 @@ void main() {
       when(() => account.username).thenReturn('other');
       when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-      final accountsBloc = MockAccountsBloc();
-      when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
       final previousChatMessage = MockChatMessage();
       when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.comment);
       when(() => previousChatMessage.timestamp).thenReturn(0);
@@ -396,13 +392,13 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          NeonProvider<AccountsBloc>.value(
-            value: accountsBloc,
-            child: TalkCommentMessage(
-              chatMessage: chatMessage,
-              lastCommonRead: 0,
-              previousChatMessage: previousChatMessage,
-            ),
+          providers: [
+            Provider<Account>.value(value: account),
+          ],
+          child: TalkCommentMessage(
+            chatMessage: chatMessage,
+            lastCommonRead: 0,
+            previousChatMessage: previousChatMessage,
           ),
         ),
       );
@@ -423,9 +419,6 @@ void main() {
       when(() => account.id).thenReturn('');
       when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-      final accountsBloc = MockAccountsBloc();
-      when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
       final previousChatMessage = MockChatMessage();
       when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.comment);
       when(() => previousChatMessage.timestamp).thenReturn(0);
@@ -443,13 +436,13 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          NeonProvider<AccountsBloc>.value(
-            value: accountsBloc,
-            child: TalkCommentMessage(
-              chatMessage: chatMessage,
-              lastCommonRead: null,
-              previousChatMessage: previousChatMessage,
-            ),
+          providers: [
+            Provider<Account>.value(value: account),
+          ],
+          child: TalkCommentMessage(
+            chatMessage: chatMessage,
+            lastCommonRead: null,
+            previousChatMessage: previousChatMessage,
           ),
         ),
       );
@@ -467,9 +460,6 @@ void main() {
       when(() => account.id).thenReturn('');
       when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-      final accountsBloc = MockAccountsBloc();
-      when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
       final chatMessage = MockChatMessage();
       when(() => chatMessage.timestamp).thenReturn(0);
       when(() => chatMessage.actorId).thenReturn('test');
@@ -480,13 +470,13 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          NeonProvider<AccountsBloc>.value(
-            value: accountsBloc,
-            child: TalkCommentMessage(
-              chatMessage: chatMessage,
-              lastCommonRead: null,
-              isParent: true,
-            ),
+          providers: [
+            Provider<Account>.value(value: account),
+          ],
+          child: TalkCommentMessage(
+            chatMessage: chatMessage,
+            lastCommonRead: null,
+            isParent: true,
           ),
         ),
       );
@@ -505,9 +495,6 @@ void main() {
       final account = MockAccount();
       when(() => account.id).thenReturn('');
       when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
-
-      final accountsBloc = MockAccountsBloc();
-      when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
 
       final previousChatMessage = MockChatMessage();
       when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.comment);
@@ -535,13 +522,13 @@ void main() {
 
       await tester.pumpWidget(
         wrapWidget(
-          NeonProvider<AccountsBloc>.value(
-            value: accountsBloc,
-            child: TalkCommentMessage(
-              chatMessage: chatMessage,
-              lastCommonRead: null,
-              previousChatMessage: previousChatMessage,
-            ),
+          providers: [
+            Provider<Account>.value(value: account),
+          ],
+          child: TalkCommentMessage(
+            chatMessage: chatMessage,
+            lastCommonRead: null,
+            previousChatMessage: previousChatMessage,
           ),
         ),
       );
@@ -558,9 +545,6 @@ void main() {
         final account = MockAccount();
         when(() => account.id).thenReturn('');
         when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
-
-        final accountsBloc = MockAccountsBloc();
-        when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
 
         final previousChatMessage = MockChatMessage();
         when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.comment);
@@ -579,13 +563,13 @@ void main() {
 
         await tester.pumpWidget(
           wrapWidget(
-            NeonProvider<AccountsBloc>.value(
-              value: accountsBloc,
-              child: TalkCommentMessage(
-                chatMessage: chatMessage,
-                lastCommonRead: null,
-                previousChatMessage: previousChatMessage,
-              ),
+            providers: [
+              Provider<Account>.value(value: account),
+            ],
+            child: TalkCommentMessage(
+              chatMessage: chatMessage,
+              lastCommonRead: null,
+              previousChatMessage: previousChatMessage,
             ),
           ),
         );
@@ -605,9 +589,6 @@ void main() {
         when(() => account.id).thenReturn('');
         when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-        final accountsBloc = MockAccountsBloc();
-        when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
         final previousChatMessage = MockChatMessage();
         when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.comment);
         when(() => previousChatMessage.timestamp).thenReturn(0);
@@ -625,13 +606,13 @@ void main() {
 
         await tester.pumpWidget(
           wrapWidget(
-            NeonProvider<AccountsBloc>.value(
-              value: accountsBloc,
-              child: TalkCommentMessage(
-                chatMessage: chatMessage,
-                lastCommonRead: null,
-                previousChatMessage: previousChatMessage,
-              ),
+            providers: [
+              Provider<Account>.value(value: account),
+            ],
+            child: TalkCommentMessage(
+              chatMessage: chatMessage,
+              lastCommonRead: null,
+              previousChatMessage: previousChatMessage,
             ),
           ),
         );
@@ -651,9 +632,6 @@ void main() {
         when(() => account.id).thenReturn('');
         when(() => account.client).thenReturn(NextcloudClient(Uri.parse('')));
 
-        final accountsBloc = MockAccountsBloc();
-        when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-
         final previousChatMessage = MockChatMessage();
         when(() => previousChatMessage.messageType).thenReturn(spreed.MessageType.system);
         when(() => previousChatMessage.timestamp).thenReturn(0);
@@ -671,13 +649,13 @@ void main() {
 
         await tester.pumpWidget(
           wrapWidget(
-            NeonProvider<AccountsBloc>.value(
-              value: accountsBloc,
-              child: TalkCommentMessage(
-                chatMessage: chatMessage,
-                lastCommonRead: null,
-                previousChatMessage: previousChatMessage,
-              ),
+            providers: [
+              Provider<Account>.value(value: account),
+            ],
+            child: TalkCommentMessage(
+              chatMessage: chatMessage,
+              lastCommonRead: null,
+              previousChatMessage: previousChatMessage,
             ),
           ),
         );
@@ -713,14 +691,11 @@ void main() {
               when(() => account.completeUri(any()))
                   .thenAnswer((invocation) => invocation.positionalArguments[0]! as Uri);
 
-              final accountsBloc = MockAccountsBloc();
-              when(() => accountsBloc.activeAccount).thenAnswer((_) => BehaviorSubject.seeded(account));
-              when(() => accountsBloc.activeUserDetailsBloc).thenReturn(userDetailsBloc);
-
               await tester.pumpWidget(
                 TestApp(
                   providers: [
-                    NeonProvider<AccountsBloc>.value(value: accountsBloc),
+                    Provider<Account>.value(value: account),
+                    NeonProvider<UserDetailsBloc>.value(value: userDetailsBloc),
                   ],
                   child: RichText(
                     text: buildRichObjectParameter(
