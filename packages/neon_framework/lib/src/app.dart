@@ -249,10 +249,6 @@ class _NeonAppState extends State<NeonApp> with WidgetsBindingObserver, WindowLi
                       Provider<Account>.value(
                         value: account,
                       ),
-                      Provider<BuiltList<Account>>.value(
-                        // TODO: Might need to listen here.
-                        value: _accountsBloc.accounts.value,
-                      ),
                       NeonProvider<AccountOptions>.value(
                         value: _accountsBloc.getOptionsFor(account),
                       ),
