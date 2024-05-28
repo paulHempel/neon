@@ -62,7 +62,14 @@ class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
         return;
       }
 
-      final lastMessage = result.requireData.firstOrNull;
+      spreed.ChatMessageWithParent? lastMessage;
+      for (final message in result.requireData) {
+        if (!message.isHidden) {
+          lastMessage = message;
+          break;
+        }
+      }
+
       if (lastMessage == null) {
         return;
       }
@@ -72,7 +79,7 @@ class _TalkRoomBloc extends InteractiveBloc implements TalkRoomBloc {
             value.copyWith(
               data: value.requireData.rebuild(
                 (b) => b
-                  ..lastActivity = lastMessage.timestamp
+                  ..lastActivity = lastMessage!.timestamp
                   ..lastMessage = (
                     baseMessage: null,
                     builtListNever: null,

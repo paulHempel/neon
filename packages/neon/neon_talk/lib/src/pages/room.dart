@@ -9,6 +9,7 @@ import 'package:neon_framework/widgets.dart';
 import 'package:neon_talk/l10n/localizations.dart';
 import 'package:neon_talk/src/blocs/room.dart';
 import 'package:neon_talk/src/theme.dart';
+import 'package:neon_talk/src/utils/helpers.dart';
 import 'package:neon_talk/src/widgets/message.dart';
 import 'package:neon_talk/src/widgets/room_avatar.dart';
 import 'package:nextcloud/spreed.dart' as spreed;
@@ -119,10 +120,17 @@ class _TalkRoomPageState extends State<TalkRoomPage> {
                 itemCount: messagesResult.data?.length ?? 0,
                 itemBuilder: (context, index) {
                   final message = messagesResult.requireData[index];
+                  if (message.isHidden) {
+                    return const SizedBox.shrink();
+                  }
 
                   spreed.ChatMessageWithParent? previousMessage;
-                  if (messagesResult.requireData.length > index + 1) {
-                    previousMessage = messagesResult.requireData[index + 1];
+                  for (var i = index + 1; i < messagesResult.requireData.length; i++) {
+                    final m = messagesResult.requireData[i];
+                    if (!m.isHidden) {
+                      previousMessage = m;
+                      break;
+                    }
                   }
 
                   return Center(
