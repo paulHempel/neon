@@ -119,7 +119,7 @@ void main() {
 
     final chatMessage2 = MockChatMessageWithParent();
     when(() => chatMessage2.id).thenReturn(3);
-    when(() => chatMessage2.timestamp).thenReturn(0);
+    when(() => chatMessage2.timestamp).thenReturn(24 * 60 * 60);
     when(() => chatMessage2.actorId).thenReturn('test');
     when(() => chatMessage2.actorType).thenReturn(spreed.ActorType.users);
     when(() => chatMessage2.actorDisplayName).thenReturn('test');
@@ -173,6 +173,8 @@ void main() {
       ),
       findsOne,
     );
+    expect(find.byType(Divider), findsOne);
+    expect(find.text('1/2/1970'), findsOne);
     await expectLater(find.byType(TestApp), matchesGoldenFile('goldens/room_page_messages.png'));
   });
 
