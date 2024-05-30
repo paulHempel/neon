@@ -102,6 +102,7 @@ TextSpan buildChatMessage({
     if (!match) {
       children.add(
         TextSpan(
+          style: style,
           text: part,
         ),
       );
@@ -123,7 +124,10 @@ InlineSpan buildRichObjectParameter({
   Widget child;
 
   if (isPreview) {
-    child = Text(parameter.name);
+    child = Text(
+      parameter.name,
+      style: textStyle,
+    );
   } else {
     switch (parameter.type) {
       case 'user' || 'call' || 'guest' || 'user-group' || 'group':
@@ -202,6 +206,7 @@ class TalkMessagePreview extends StatelessWidget {
           buildChatMessage(
             chatMessage: chatMessage,
             isPreview: true,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
