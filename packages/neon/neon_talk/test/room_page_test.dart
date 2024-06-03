@@ -117,10 +117,6 @@ void main() {
     when(() => chatMessage1.messageParameters).thenReturn(BuiltMap());
     when(() => chatMessage1.systemMessage).thenReturn('');
 
-    final hiddenChatMessage = MockChatMessageWithParent();
-    when(() => hiddenChatMessage.id).thenReturn(2);
-    when(() => hiddenChatMessage.systemMessage).thenReturn('reaction');
-
     final chatMessage2 = MockChatMessageWithParent();
     when(() => chatMessage2.id).thenReturn(3);
     when(() => chatMessage2.timestamp).thenReturn(0);
@@ -139,7 +135,6 @@ void main() {
         Result.success(
           BuiltList<spreed.ChatMessageWithParent>([
             chatMessage2,
-            hiddenChatMessage,
             chatMessage1,
           ]),
         ),

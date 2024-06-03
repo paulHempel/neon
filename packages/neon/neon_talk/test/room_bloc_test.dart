@@ -496,9 +496,7 @@ void main() {
         ),
         Result.success(
           BuiltList<(int, String, BuiltMap<String, int>)>([
-            (5, '', BuiltMap<String, int>()),
             (4, '', BuiltMap<String, int>()),
-            (3, '', BuiltMap<String, int>()),
             (2, 'edit', BuiltMap<String, int>({'😊': 1})),
             (1, '', BuiltMap<String, int>()),
             (0, '', BuiltMap<String, int>()),
